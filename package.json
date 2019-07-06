@@ -1,0 +1,15 @@
+{
+  "name": "mongoose-child-refs-tree",
+  "version": "1.0.0",
+  "description": "Mongoose plugin for tree hierarchy using child references implemented in TypeScript",
+  "main": "index.js",
+  "repository": "https://github.com/UtopiaBeam/mongoose-child-refs-tree.git",
+  "author": "UtopiaBeam <utopiabeam@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose": "^5.6.3"
+  },
+  "devDependencies": {
+    "@types/mongoose": "^5.5.7"
+  }
+}
