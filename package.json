@@ -10,6 +10,9 @@
     "mongoose": "^5.6.3"
   },
   "devDependencies": {
-    "@types/mongoose": "^5.5.7"
+    "@types/mongoose": "^5.5.7",
+    "prettier": "^1.18.2",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.2"
   }
 }
