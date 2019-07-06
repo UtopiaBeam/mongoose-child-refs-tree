@@ -8,6 +8,7 @@
   "license": "MIT",
   "scripts": {
     "test": "jest",
+    "format": "prettier --write \"**/*.ts\"",
     "test:watch": "jest --watch"
   },
   "dependencies": {
