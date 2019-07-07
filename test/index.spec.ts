@@ -1,6 +1,5 @@
 import ChildReferenceTreePlugin from '../lib';
-import { Schema } from 'mongoose';
-import * as mongoose from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { ChildRefDocument } from '../lib/interface';
 import { mock } from 'sinon';
 import 'sinon-mongoose';
@@ -14,7 +13,7 @@ describe('Mongoose child reference tree plugin', () => {
     });
     // TODO: register plugin with mongoose schema
     // TreeSchema.plugin(ChildReferenceTreePlugin);
-    const Tree = mongoose.model<TreeDocument>('Tree', TreeSchema);
+    const Tree = model<TreeDocument>('Tree', TreeSchema);
     const TreeMock = mock(Tree);
 
     it('should be defined', () => {
