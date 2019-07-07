@@ -6,7 +6,7 @@ import { Options, ChildRefDocument } from './interface';
  * @param  {Schema} schema  Mongoose Schema
  * @param  {Object} options [description]
  */
-function mongooseChildRef(schema: Schema, options: Options): Schema {
+function mongooseChildRef(schema: Schema, options?: Options): Schema {
     const cascade: boolean = (options && options.cascade) || false;
 
     schema.add({
