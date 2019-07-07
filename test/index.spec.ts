@@ -1,30 +1,42 @@
 import ChildReferenceTreePlugin from '../lib';
-import { Schema, model } from 'mongoose';
+import * as mongoose from 'mongoose';
 import { ChildRefDocument } from '../lib/interface';
-import { mock } from 'sinon';
-import 'sinon-mongoose';
 interface TreeDocument extends ChildRefDocument {
     name: string;
 }
 
-describe('Mongoose child reference tree plugin', () => {
-    const TreeSchema = new Schema({
-        name: String,
-    });
-    // TODO: register plugin with mongoose schema
-    // TreeSchema.plugin(ChildReferenceTreePlugin);
-    const Tree = model<TreeDocument>('Tree', TreeSchema);
-    const TreeMock = mock(Tree);
-
+describe('Plugin existence', () => {
     it('should be defined', () => {
         expect(ChildReferenceTreePlugin).toBeDefined();
     });
+});
 
-    it('should find all element', async () => {
-        TreeMock.expects('find').withArgs({}).resolves([]);
-        const trees = await Tree.find({});
-        TreeMock.verify();
-        TreeMock.restore();
-        expect(trees.length).toEqual(0);
+describe('Mongoose child reference tree plugin function', () => {
+
+    const treeSchema = new mongoose.Schema({
+        name: String,
+    });
+    let Tree: mongoose.Model<TreeDocument>;
+
+    beforeAll(async () => {
+        await mongoose.connect('mongodb://localhost:27017/seating-backend', { useNewUrlParser: true });
+        treeSchema.plugin(ChildReferenceTreePlugin);
+        Tree = mongoose.model('Tree', treeSchema);
+    });
+
+    describe('Database connection', () => {
+        it('should connect to database', () => {
+            expect(mongoose.connection.readyState).toBe(1);
+        });
+    });
+
+    describe('Plugin initialization', () => {
+        it('should have children field', () => {
+            expect(Tree.schema.path('children').get).toBeDefined();
+        });
+    });
+
+    afterAll(async () => {
+        await mongoose.connection.close();
     });
 });
