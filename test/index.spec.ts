@@ -96,13 +96,59 @@ describe('Mongoose child reference tree plugin function', () => {
             });
         });
 
+        describe('Update', () => {
+            /**
+             * Expect with following structure
+             *    A
+             *   / \
+             *  B   C 
+             *       \
+             *        E 
+             */
+            it('should remove pop element', async () => {
+                let root = await Tree.findOne({ name: 'A' });
+                root.children.pop();
+                root = await root.save();
+                expect(root.children).toHaveLength(2);
+            });
+        });
+
         describe('Delete', () => {
+            /**
+             * Expect with following structure
+             *     A
+             *   / | \
+             *  B  C  D
+             */
             it('should remove leaf element', async () => {
-                await Tree.remove({name: 'E'});
-                const deleteNode = await Tree.findOne({name:'E'});
+                await Tree.remove({ name: 'E' });
+                const deleteNode = await Tree.findOne({ name: 'E' });
                 expect(deleteNode).toBeNull();
-                const nodeC = await Tree.findOne({name: 'C'});
+                const nodeC = await Tree.findOne({ name: 'C' });
                 expect(nodeC.children).toHaveLength(0);
+            });
+
+            /**
+             * Expect with following structure
+             *     A
+             *   / | \
+             *  B  E  D
+             */
+            it('should remove non-lead element while preserve child', async () => {
+                let root = await Tree.findOne({ name: 'A' });
+                expect(root.children).toHaveLength(3);
+                await Tree.remove({ name: 'C' });
+                root = await Tree.findOne({ name: 'A' });
+                expect(root.children).toHaveLength(3);
+                const nodeB = await Tree.findById(root.children[0]);
+                const nodeE = await Tree.findById(root.children[1]);
+                const nodeD = await Tree.findById(root.children[2]);
+                expect(nodeB).toBeDefined();
+                expect(nodeB.name).toEqual('B');
+                expect(nodeE).toBeDefined();
+                expect(nodeE.name).toEqual('E');
+                expect(nodeD).toBeDefined();
+                expect(nodeD.name).toEqual('D');
             });
         });
     });
