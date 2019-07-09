@@ -30,11 +30,11 @@ describe('Mongoose child reference tree plugin function', () => {
 
         /**
          * Initialize database with following structure
-         *    A
-         *  / | \
-         * B  C  D
-         *     \   
-         *      E 
+         *     A
+         *   / | \
+         *  B  C  D
+         *      \   
+         *       E 
          */
         beforeEach(async () => {
             await Tree.deleteMany({});
@@ -77,6 +77,14 @@ describe('Mongoose child reference tree plugin function', () => {
         });
 
         describe('Add', () => {
+            /**
+             * Expect with following structure
+             *       A
+             *     / | \
+             *    B  C  D
+             *   /   | 
+             *  F    E
+             */
             it('should add child after B', async () => {
                 // TODO: I will change the way to add child later
                 const newNode = new Tree({ name: 'F' });
